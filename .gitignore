@@ -1,0 +1,29 @@
+# Env and secrets
+.env
+.env.local
+*.pem
+
+# Logs and local data (optional: remove data/jobs.json to track it in git)
+*.log
+# data/jobs.json
+
+# Bundler
+.bundle/
+vendor/bundle
+
+# Ruby
+*.gem
+*.rbc
+/.config
+/coverage/
+/spec/examples.txt
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

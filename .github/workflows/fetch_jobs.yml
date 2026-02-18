@@ -1,0 +1,33 @@
+# Hourly cron: fetch Rails jobs and notify via Discord (when DISCORD_WEBHOOK_URL is set)
+name: Fetch Rails Jobs
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # Every hour at minute 0
+  workflow_dispatch:      # Allow manual run
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Fetch jobs
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RAILS_JOBS_OUTPUT_FILE: data/jobs.json
+        run: bundle exec ruby bin/fetch
+
+      - name: Commit and push updated jobs.json (optional)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/jobs.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore: update jobs.json [skip ci]"
+          git push || true

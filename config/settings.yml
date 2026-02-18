@@ -1,0 +1,18 @@
+# rails-jobs-morocco configuration
+# Values here can be overridden by environment variables (e.g. RAILS_JOBS_OUTPUT_FILE).
+
+output_file: data/jobs.json
+log_file: rails_jobs.log
+
+keywords:
+  - ruby on rails
+  - rails developer
+  - ruby developer
+  - ror developer
+  - backend ruby
+  
+discord:
+  limit: 5
+  sleep: 1
+  # role_id: "1234567890123456789"  # optional; or set DISCORD_ROLE_ID in .env to mention Job Seekers
+  # footer set via DISCORD_FOOTER env; webhook via DISCORD_WEBHOOK_URL
