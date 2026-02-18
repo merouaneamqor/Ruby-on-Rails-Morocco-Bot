@@ -26,7 +26,8 @@ module RailsJobs
 
       existing = @store.load
       all_fetched = fetchers.flat_map { |f| f.fetch }
-      new_jobs = all_fetched.reject { |job| existing.any? { |j| j["id"] == job[:id] } }
+      # Already seen = same id OR same url (so we never re-send or duplicate the same job)
+      new_jobs = all_fetched.reject { |job| existing.any? { |j| j["id"] == job[:id] || j["url"] == job[:url] } }
 
       if new_jobs.empty?
         puts "✅ No new jobs found."
@@ -35,7 +36,8 @@ module RailsJobs
         puts "🚀 #{new_jobs.count} new job(s) found!"
         @logger.info("#{new_jobs.count} new jobs fetched.")
 
-        all_jobs = existing + new_jobs.map { |j| j.transform_keys(&:to_s) }
+        # Deduplicate by URL so we don't keep multiple copies of the same job
+        all_jobs = (existing + new_jobs.map { |j| j.transform_keys(&:to_s) }).uniq { |j| j["url"] }
         @store.save(all_jobs)
 
         notify_discord(new_jobs)

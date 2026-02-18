@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "digest"
 require_relative "base_fetcher"
 
 module Fetchers
@@ -14,12 +15,17 @@ module Fetchers
       jobs = data["jobs"] || []
 
       jobs.map do |j|
+        url = (j["applicationLink"] || j["url"]).to_s.strip
+        # Stable id from URL so the same job is never treated as new again
+        id = url.empty? ? j["id"].to_s : Digest::MD5.hexdigest(url).to_s[0, 16]
+        id = "h#{id.hash.abs}" if id.to_s.strip.empty?
+
         job_row(
-          id:        (j["id"].to_s.strip.empty? ? j["url"].to_s.hash.abs : j["id"]).to_s,
+          id:        id,
           title:     j["title"],
           company:   j.dig("company", "name"),
           location:  j["locationRestrictions"]&.join(", ") || "Worldwide",
-          url:       j["applicationLink"] || j["url"],
+          url:       url.empty? ? "https://himalayas.app/jobs" : url,
           salary:    j["salary"] || "Not specified",
           posted_at: j["publishedAt"]
         )
