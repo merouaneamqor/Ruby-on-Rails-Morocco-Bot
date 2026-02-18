@@ -1,10 +1,11 @@
 # Runs every hour on the hour + manual run
-# Discord: Repo → Settings → Secrets and variables → Actions → DISCORD_WEBHOOK_URL
+# All env for the bot come from GitHub: Settings → Secrets and variables → Actions
+#   Secrets: DISCORD_WEBHOOK_URL (required for Discord)
+#   Variables: RAILS_JOBS_OUTPUT_FILE, DISCORD_ROLE_ID, DISCORD_FOOTER, DISCORD_LIMIT, DISCORD_SLEEP, etc.
 name: Fetch Rails Jobs
 
 on:
   schedule:
-    # Every hour at minute 0 (00:00, 01:00, 02:00, ... UTC)
     - cron: "0 * * * *"
   workflow_dispatch:   # Run manually from Actions tab
 
@@ -24,9 +25,16 @@ jobs:
 
       - name: Fetch jobs
         env:
-          # Set in repo: Settings → Secrets and variables → Actions → DISCORD_WEBHOOK_URL
+          # Secrets (Settings → Secrets and variables → Actions → Secrets)
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          RAILS_JOBS_OUTPUT_FILE: data/jobs.json
+          # Variables (Settings → Secrets and variables → Actions → Variables); empty = use app defaults
+          RAILS_JOBS_OUTPUT_FILE: ${{ vars.RAILS_JOBS_OUTPUT_FILE || 'data/jobs.json' }}
+          RAILS_JOBS_LOG_FILE: ${{ vars.RAILS_JOBS_LOG_FILE }}
+          RAILS_JOBS_KEYWORDS: ${{ vars.RAILS_JOBS_KEYWORDS }}
+          DISCORD_ROLE_ID: ${{ vars.DISCORD_ROLE_ID }}
+          DISCORD_FOOTER: ${{ vars.DISCORD_FOOTER }}
+          DISCORD_LIMIT: ${{ vars.DISCORD_LIMIT }}
+          DISCORD_SLEEP: ${{ vars.DISCORD_SLEEP }}
         run: bundle exec ruby bin/fetch
 
       - name: Commit and push updated jobs.json (optional)

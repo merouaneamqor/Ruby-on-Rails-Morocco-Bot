@@ -71,15 +71,19 @@ Ruby-on-Rails-Morocco-Bot/
 
 ## GitHub Actions
 
-1. **Add the Discord webhook secret** (otherwise you’ll see “Discord: skipped” in the logs):
-   - Open your repo on GitHub → **Settings** → **Secrets and variables** → **Actions**
-   - Click **New repository secret**
-   - **Name:** `DISCORD_WEBHOOK_URL` (exactly)
-   - **Value:** your Discord webhook URL (e.g. `https://discord.com/api/webhooks/...`)
+The workflow gets all configuration from **GitHub Secrets and Variables** (no `.env` in the repo).
 
-2. The workflow runs every hour and on **Actions → Fetch Rails Jobs → Run workflow**.
+1. **Secrets** (Settings → Secrets and variables → Actions → **Secrets**):
+   - **`DISCORD_WEBHOOK_URL`** (required for Discord): your webhook URL.
 
-3. Optionally, the workflow can commit updated `data/jobs.json` (step is included; adjust if you don’t want commits).
+2. **Variables** (Settings → Secrets and variables → Actions → **Variables**), optional:
+   - `RAILS_JOBS_OUTPUT_FILE`, `RAILS_JOBS_LOG_FILE`, `RAILS_JOBS_KEYWORDS`
+   - `DISCORD_ROLE_ID`, `DISCORD_FOOTER`, `DISCORD_LIMIT`, `DISCORD_SLEEP`  
+   If you don’t set them, the app uses its defaults.
+
+3. The workflow runs every hour and on **Actions → Fetch Rails Jobs → Run workflow**.
+
+4. Optionally, the workflow can commit updated `data/jobs.json` (step is included; adjust if you don’t want commits).
 
 ## Development
 
