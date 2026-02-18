@@ -1,6 +1,6 @@
 # Ruby on Rails Morocco Bot
 
-**Repo:** [github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot](https://github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot)
+**Repo:** [github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot](https://github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot) · **Join the server:** [Discord — Ruby on Rails Morocco](https://discord.gg/4WZnYEghmj)
 
 A small Ruby bot that fetches **Ruby on Rails** (and related) remote job listings from several job boards, stores them in JSON, and optionally notifies a Discord channel when new jobs appear (pings **@everyone** or a role by default).
 
@@ -84,6 +84,10 @@ The workflow gets all configuration from **GitHub Secrets and Variables** (no `.
 3. The workflow runs every hour and on **Actions → Fetch Rails Jobs → Run workflow**.
 
 4. Optionally, the workflow can commit updated `data/jobs.json` (step is included; adjust if you don’t want commits).
+
+## Community
+
+Join the **Ruby on Rails Morocco** Discord server: [discord.gg/4WZnYEghmj](https://discord.gg/4WZnYEghmj)
 
 ## Development
 

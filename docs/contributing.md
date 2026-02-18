@@ -1,6 +1,6 @@
 # Contributing to Ruby on Rails Morocco Bot
 
-Thanks for your interest in contributing.
+Thanks for your interest in contributing. **Join the community:** [Discord — Ruby on Rails Morocco](https://discord.gg/4WZnYEghmj)
 
 ## Setup
 
