@@ -1,4 +1,4 @@
-# rails-jobs-morocco configuration
+# Ruby on Rails Morocco Bot — https://github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot
 # Values here can be overridden by environment variables (e.g. RAILS_JOBS_OUTPUT_FILE).
 
 output_file: data/jobs.json
@@ -10,7 +10,7 @@ keywords:
   - ruby developer
   - ror developer
   - backend ruby
-  
+
 discord:
   limit: 5
   sleep: 1

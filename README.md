@@ -1,6 +1,8 @@
-# rails-jobs-morocco
+# Ruby on Rails Morocco Bot
 
-A small Ruby bot that fetches **Ruby on Rails** (and related) remote job listings from several job boards, stores them in JSON, and optionally notifies a Discord channel when new jobs appear.
+**Repo:** [github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot](https://github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot)
+
+A small Ruby bot that fetches **Ruby on Rails** (and related) remote job listings from several job boards, stores them in JSON, and optionally notifies a Discord channel when new jobs appear (pings **@everyone** or a role by default).
 
 ## Features
 
@@ -18,8 +20,8 @@ A small Ruby bot that fetches **Ruby on Rails** (and related) remote job listing
 ## Quick start
 
 ```bash
-git clone https://github.com/rails-jobs-morocco/rails-jobs-morocco.git
-cd rails-jobs-morocco
+git clone https://github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot.git
+cd Ruby-on-Rails-Morocco-Bot
 bundle install
 ```
 
@@ -29,7 +31,7 @@ Run the fetcher:
 bundle exec ruby bin/fetch
 ```
 
-Jobs are written to `data/jobs.json` by default. To get Discord notifications, copy `.env.example` to `.env` and set `DISCORD_WEBHOOK_URL`.
+Jobs are written to `data/jobs.json` by default. For Discord notifications, copy `.env.example` to `.env` and set `DISCORD_WEBHOOK_URL`; the first new-job message will ping **@everyone** unless you set `DISCORD_ROLE_ID`.
 
 ## Configuration
 
@@ -39,6 +41,7 @@ Jobs are written to `data/jobs.json` by default. To get Discord notifications, c
 | `RAILS_JOBS_LOG_FILE` | Log file path | `rails_jobs.log` |
 | `RAILS_JOBS_KEYWORDS` | Comma-separated keywords | ruby on rails, rails developer, ruby developer, ror developer |
 | `DISCORD_WEBHOOK_URL` | Discord webhook for new jobs | (none) |
+| `DISCORD_ROLE_ID` | Optional role to mention (default: @everyone) | (none) |
 | `DISCORD_FOOTER` | Footer text on Discord embeds | RoR Morocco Job Bot 🇲🇦 • rails-jobs-morocco |
 | `DISCORD_LIMIT` | Max new jobs to send per run | 5 |
 | `DISCORD_SLEEP` | Seconds between Discord posts | 1 |
@@ -48,7 +51,7 @@ You can also edit `config/settings.yml` for defaults; env vars override YAML.
 ## Project layout
 
 ```
-rails-jobs-morocco/
+Ruby-on-Rails-Morocco-Bot/
 ├── .github/workflows/fetch_jobs.yml   # Hourly cron + manual run
 ├── bin/fetch                          # Entry point
 ├── config/settings.yml                # Config (keywords, paths, etc.)

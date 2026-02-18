@@ -1,12 +1,12 @@
-# Contributing to rails-jobs-morocco
+# Contributing to Ruby on Rails Morocco Bot
 
 Thanks for your interest in contributing.
 
 ## Setup
 
 ```bash
-git clone https://github.com/rails-jobs-morocco/rails-jobs-morocco.git
-cd rails-jobs-morocco
+git clone https://github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot.git
+cd Ruby-on-Rails-Morocco-Bot
 bundle install
 cp .env.example .env   # optional: add your DISCORD_WEBHOOK_URL for testing
 ```

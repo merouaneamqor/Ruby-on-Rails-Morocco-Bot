@@ -19,4 +19,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - RSpec tests for fetchers, Discord notifier, JSON store
 - RuboCop configuration
 
-[1.0.0]: https://github.com/rails-jobs-morocco/rails-jobs-morocco/releases/tag/v1.0.0
+[1.0.0]: https://github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot/releases/tag/v1.0.0

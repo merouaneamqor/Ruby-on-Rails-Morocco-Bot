@@ -9,7 +9,7 @@ module Fetchers
   class BaseFetcher
     OPEN_TIMEOUT = 10
     READ_TIMEOUT = 15
-    USER_AGENT   = "RailsJobsMorocco/1.0 (https://github.com/rails-jobs-morocco/rails-jobs-morocco)"
+    USER_AGENT   = "RubyOnRailsMoroccoBot/1.0 (https://github.com/merouaneamqor/Ruby-on-Rails-Morocco-Bot)"
 
     def initialize(config:)
       @config = config
