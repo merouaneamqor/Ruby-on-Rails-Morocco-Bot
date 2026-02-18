@@ -14,22 +14,27 @@ module Fetchers
       data = JSON.parse(body)
       jobs = data["jobs"] || []
 
-      jobs.map do |j|
-        url = (j["applicationLink"] || j["url"]).to_s.strip
-        # Stable id from URL so the same job is never treated as new again
-        id = url.empty? ? j["id"].to_s : Digest::MD5.hexdigest(url).to_s[0, 16]
-        id = "h#{id.hash.abs}" if id.to_s.strip.empty?
+      jobs
+        .select do |j|
+          skills_text = j["skills"]&.map { |s| s["name"] }&.join(" ")
+          matches_keywords?(j["title"]) || matches_keywords?(skills_text)
+        end
+        .map do |j|
+          url = (j["applicationLink"] || j["url"]).to_s.strip
+          # Stable id from URL so the same job is never treated as new again
+          id = url.empty? ? j["id"].to_s : Digest::MD5.hexdigest(url).to_s[0, 16]
+          id = "h#{id.hash.abs}" if id.to_s.strip.empty?
 
-        job_row(
-          id:        id,
-          title:     j["title"],
-          company:   j.dig("company", "name"),
-          location:  j["locationRestrictions"]&.join(", ") || "Worldwide",
-          url:       url.empty? ? "https://himalayas.app/jobs" : url,
-          salary:    j["salary"] || "Not specified",
-          posted_at: j["publishedAt"]
-        )
-      end
+          job_row(
+            id:        id,
+            title:     j["title"],
+            company:   j.dig("company", "name"),
+            location:  j["locationRestrictions"]&.join(", ") || "Worldwide",
+            url:       url.empty? ? "https://himalayas.app/jobs" : url,
+            salary:    j["salary"] || "Not specified",
+            posted_at: j["publishedAt"]
+          )
+        end
     rescue StandardError => e
       warn "Himalayas error: #{e.message}"
       []

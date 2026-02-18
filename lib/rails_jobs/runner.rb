@@ -9,6 +9,11 @@ require_relative "../fetchers/remotive_fetcher"
 require_relative "../fetchers/arbeitnow_fetcher"
 require_relative "../fetchers/himalayas_fetcher"
 require_relative "../fetchers/the_muse_fetcher"
+require_relative "../fetchers/we_work_remotely_fetcher"
+require_relative "../fetchers/jobicy_fetcher"
+require_relative "../fetchers/remote_ok_fetcher"
+require_relative "../fetchers/wellfound_fetcher"
+require_relative "../fetchers/apify_indeed_fetcher"
 require_relative "../notifiers/discord_notifier"
 require_relative "../storage/json_store"
 
@@ -53,7 +58,12 @@ module RailsJobs
         Fetchers::RemotiveFetcher.new(config: @config),
         Fetchers::TheMuseFetcher.new(config: @config),
         Fetchers::ArbeitnowFetcher.new(config: @config),
-        Fetchers::HimalayasFetcher.new(config: @config)
+        Fetchers::HimalayasFetcher.new(config: @config),
+        Fetchers::WeWorkRemotelyFetcher.new(config: @config),
+        Fetchers::JobicyFetcher.new(config: @config),
+        Fetchers::RemoteOkFetcher.new(config: @config),
+        Fetchers::WellfoundFetcher.new(config: @config),
+        Fetchers::ApifyIndeedFetcher.new(config: @config)
       ]
     end
 
