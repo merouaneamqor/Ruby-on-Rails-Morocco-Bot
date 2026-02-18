@@ -26,8 +26,8 @@ module RailsJobs
 
       existing = @store.load
       all_fetched = fetchers.flat_map { |f| f.fetch }
-      # Already seen = same id OR same url (so we never re-send or duplicate the same job)
-      new_jobs = all_fetched.reject { |job| existing.any? { |j| j["id"] == job[:id] || j["url"] == job[:url] } }
+      # Already seen = same URL (don't re-send or duplicate)
+      new_jobs = all_fetched.reject { |job| existing.any? { |j| j["url"] == job[:url] } }
 
       if new_jobs.empty?
         puts "✅ No new jobs found."
