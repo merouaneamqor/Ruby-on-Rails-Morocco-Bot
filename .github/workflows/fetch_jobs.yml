@@ -1,10 +1,12 @@
-# Hourly cron: fetch Rails jobs and notify via Discord (when DISCORD_WEBHOOK_URL is set)
+# Runs every hour on the hour + manual run
+# Discord: Repo → Settings → Secrets and variables → Actions → DISCORD_WEBHOOK_URL
 name: Fetch Rails Jobs
 
 on:
   schedule:
-    - cron: "0 * * * *"   # Every hour at minute 0
-  workflow_dispatch:      # Allow manual run
+    # Every hour at minute 0 (00:00, 01:00, 02:00, ... UTC)
+    - cron: "0 * * * *"
+  workflow_dispatch:   # Run manually from Actions tab
 
 jobs:
   fetch:
@@ -20,6 +22,7 @@ jobs:
 
       - name: Fetch jobs
         env:
+          # Set in repo: Settings → Secrets and variables → Actions → DISCORD_WEBHOOK_URL
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           RAILS_JOBS_OUTPUT_FILE: data/jobs.json
         run: bundle exec ruby bin/fetch

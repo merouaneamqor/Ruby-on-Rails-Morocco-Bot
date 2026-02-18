@@ -71,9 +71,11 @@ Ruby-on-Rails-Morocco-Bot/
 
 ## GitHub Actions
 
-1. In your fork or repo, add a secret: **Settings → Secrets and variables → Actions → New repository secret**  
-   - Name: `DISCORD_WEBHOOK_URL`  
-   - Value: your Discord webhook URL  
+1. **Add the Discord webhook secret** (otherwise you’ll see “Discord: skipped” in the logs):
+   - Open your repo on GitHub → **Settings** → **Secrets and variables** → **Actions**
+   - Click **New repository secret**
+   - **Name:** `DISCORD_WEBHOOK_URL` (exactly)
+   - **Value:** your Discord webhook URL (e.g. `https://discord.com/api/webhooks/...`)
 
 2. The workflow runs every hour and on **Actions → Fetch Rails Jobs → Run workflow**.
 
