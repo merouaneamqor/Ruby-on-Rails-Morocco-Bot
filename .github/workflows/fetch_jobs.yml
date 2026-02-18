@@ -11,6 +11,8 @@ on:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # so the workflow can push jobs.json
     steps:
       - uses: actions/checkout@v4
 
