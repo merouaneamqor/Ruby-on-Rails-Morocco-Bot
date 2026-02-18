@@ -1,21 +1,30 @@
-# Runs every hour on the hour + manual run
-# All env for the bot come from GitHub: Settings → Secrets and variables → Actions
-#   Secrets: DISCORD_WEBHOOK_URL (required for Discord)
-#   Variables: RAILS_JOBS_OUTPUT_FILE, DISCORD_ROLE_ID, DISCORD_FOOTER, DISCORD_LIMIT, DISCORD_SLEEP, etc.
 name: Fetch Rails Jobs
 
 on:
   schedule:
-    - cron: "0 * * * *"
-  workflow_dispatch:   # Run manually from Actions tab
+    - cron: "0 * * * *" # Runs every hour at :00 UTC
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+# Prevent overlapping runs
+concurrency:
+  group: fetch-rails-jobs
+  cancel-in-progress: false
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     permissions:
-      contents: write   # so the workflow can push jobs.json
+      contents: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -23,24 +32,34 @@ jobs:
           ruby-version: "3.2"
           bundler-cache: true
 
+      - name: Install dependencies
+        run: bundle install --jobs 4 --retry 3
+
       - name: Fetch jobs
         env:
-          # Secrets (Settings → Secrets and variables → Actions → Secrets)
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          # Variables (Settings → Secrets and variables → Actions → Variables); empty = use app defaults
-          RAILS_JOBS_OUTPUT_FILE: ${{ vars.RAILS_JOBS_OUTPUT_FILE || 'data/jobs.json' }}
+
+          RAILS_JOBS_OUTPUT_FILE: ${{ vars.RAILS_JOBS_OUTPUT_FILE }}
           RAILS_JOBS_LOG_FILE: ${{ vars.RAILS_JOBS_LOG_FILE }}
           RAILS_JOBS_KEYWORDS: ${{ vars.RAILS_JOBS_KEYWORDS }}
+
           DISCORD_ROLE_ID: ${{ vars.DISCORD_ROLE_ID }}
           DISCORD_FOOTER: ${{ vars.DISCORD_FOOTER }}
           DISCORD_LIMIT: ${{ vars.DISCORD_LIMIT }}
           DISCORD_SLEEP: ${{ vars.DISCORD_SLEEP }}
+
         run: bundle exec ruby bin/fetch
 
-      - name: Commit and push updated jobs.json (optional)
+      - name: Commit and push updated jobs.json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/jobs.json 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "chore: update jobs.json [skip ci]"
-          git push || true
+
+          git add data/jobs.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update jobs.json [skip ci]"
+            git push
+          fi
